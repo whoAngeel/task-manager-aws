@@ -1,5 +1,6 @@
 import React from "react";
 import TaskList from "../components/TaskList";
+import TaskForm from "../components/TaskForm";
 
 function Home() {
 	return (
@@ -8,7 +9,8 @@ function Home() {
 				<h1 className="text-3xl font-bold underline text-center my-8">
 					Task Manager
 				</h1>
-				<div>
+				<div className="flex flex-col gap-2">
+					<TaskForm />
 					<TaskList />
 				</div>
 			</div>

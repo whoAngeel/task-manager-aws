@@ -1,4 +1,5 @@
 import { message } from "antd";
+import Title from "antd/es/skeleton/Title";
 import axios from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
 
@@ -50,6 +51,22 @@ export const TaskProvider = ({ children }) => {
 		}
 	};
 
+	const pushTask = async (title) => {
+		setIsLoading(true);
+		try {
+			const response = await axios.post(
+				`${import.meta.env.VITE_API_URL}/tasks`,
+				{ title }
+			);
+			setTasks([response.data, ...tasks]); //TODO ordenar en orden de creacion
+		} catch (error) {
+			console.log(error);
+			messageApi.error("Error adding task!!");
+		} finally {
+			setIsLoading(false);
+		}
+	};
+
 	const clearTasks = () => {
 		setTasks([]);
 		setIsInitialized(false);
@@ -64,6 +81,7 @@ export const TaskProvider = ({ children }) => {
 				isLoading,
 				isInitialized,
 				clearTasks,
+				pushTask,
 			}}
 		>
 			{contextHolder}
