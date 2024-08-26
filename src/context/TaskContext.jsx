@@ -36,10 +36,10 @@ export const TaskProvider = ({ children }) => {
 	const fetchTasks = async () => {
 		setIsLoading(true);
 		try {
-			// const response = await axios.get(
-			// 	`${import.meta.env.VITE_API_URL}/tasks`
-			// );
-			const response = await axios.get(`/api/tasks`);
+			const response = await axios.get(
+				`${import.meta.env.VITE_API_URL}/tasks`
+			);
+			// const response = await axios.get(`/api/tasks`);
 			setTasks(response.data);
 		} catch (error) {
 			console.log(error);
