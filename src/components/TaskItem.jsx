@@ -4,7 +4,7 @@ import { DeleteOutlined } from "@ant-design/icons";
 import { useTask } from "../context/TaskContext";
 
 function TaskItem({ task }) {
-	const { deleteTask } = useTask();
+	const { deleteTask, toggleTask } = useTask();
 	return (
 		<div className="w-full bg-purple-300 rounded-lg h-12 p-2 flex content-between items-center justify-between">
 			<div className="flex items-center">

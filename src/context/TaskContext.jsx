@@ -75,36 +75,64 @@ export const TaskProvider = ({ children }) => {
 
 	const deleteTask = async (id) => {
 		// console.log(id);
-		const hideLoadingMessage = messageApi.open({
-			type: "loading",
-			content: "Deleting task...",
-			duration: 0, // El mensaje no se cierra automáticamente
-		});
-		console.log(id);
+		const key = "deletable";
+
 		try {
-			const response = axios.delete(
+			messageApi.open({
+				key,
+				type: "loading",
+				content: "Deleting task...",
+				duration: 0,
+			});
+			const response = await axios.delete(
 				`${import.meta.env.VITE_API_URL}/tasks/${id}`
 			);
-			// Actualizar la lista de tareas solo si la solicitud fue exitosa
-			setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
-
-			// Cerrar el mensaje de carga
-			hideLoadingMessage();
-
-			// Mostrar mensaje de éxito
 			messageApi.success({
+				key,
 				content: "Task deleted successfully!",
 				duration: 2,
 			});
+			setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
 		} catch (error) {
-			hideLoadingMessage();
-
-			// Mostrar mensaje de error
 			messageApi.error({
-				content: `Error deleting a task`,
+				key,
+				content: `Error deleting the task`,
 				duration: 2,
 			});
 			console.error(error);
+		}
+	};
+
+	const toggleTask = async (id) => {
+		const key = "updatable";
+		try {
+			messageApi.open({
+				key,
+				type: "loading",
+				content: "Toggling task...",
+				duration: 0,
+			});
+			const res = await axios.patch(
+				`${import.meta.env.VITE_API_URL}/tasks/${id}/toggle`
+			);
+			console.log(res.data);
+			setTasks((prevTasks) =>
+				prevTasks.map((task) =>
+					task.id === id ? { ...task, completed: !task.completed } : task
+				)
+			);
+			messageApi.success({
+				key,
+				type: "success",
+				content: "Task toggled successfully!",
+			});
+		} catch (error) {
+			messageApi.error({
+				key,
+				content: `Error updating the task`,
+				duration: 2,
+			});
+			console.log(error);
 		}
 	};
 	return (
@@ -118,6 +146,7 @@ export const TaskProvider = ({ children }) => {
 				clearTasks,
 				pushTask,
 				deleteTask,
+				toggleTask,
 			}}
 		>
 			{contextHolder}
