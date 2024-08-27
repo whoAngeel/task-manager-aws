@@ -72,6 +72,41 @@ export const TaskProvider = ({ children }) => {
 		setIsInitialized(false);
 		console.log("tasks cleared", tasks.length);
 	};
+
+	const deleteTask = async (id) => {
+		// console.log(id);
+		const hideLoadingMessage = messageApi.open({
+			type: "loading",
+			content: "Deleting task...",
+			duration: 0, // El mensaje no se cierra automáticamente
+		});
+		console.log(id);
+		try {
+			const response = axios.delete(
+				`${import.meta.env.VITE_API_URL}/tasks/${id}`
+			);
+			// Actualizar la lista de tareas solo si la solicitud fue exitosa
+			setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
+
+			// Cerrar el mensaje de carga
+			hideLoadingMessage();
+
+			// Mostrar mensaje de éxito
+			messageApi.success({
+				content: "Task deleted successfully!",
+				duration: 2,
+			});
+		} catch (error) {
+			hideLoadingMessage();
+
+			// Mostrar mensaje de error
+			messageApi.error({
+				content: `Error deleting a task`,
+				duration: 2,
+			});
+			console.error(error);
+		}
+	};
 	return (
 		<TaskContext.Provider
 			value={{
@@ -82,6 +117,7 @@ export const TaskProvider = ({ children }) => {
 				isInitialized,
 				clearTasks,
 				pushTask,
+				deleteTask,
 			}}
 		>
 			{contextHolder}

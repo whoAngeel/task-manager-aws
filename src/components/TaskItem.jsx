@@ -1,9 +1,10 @@
 import React from "react";
 // import { useTask } from "../context/TaskContext.jsx";
 import { DeleteOutlined } from "@ant-design/icons";
+import { useTask } from "../context/TaskContext";
 
 function TaskItem({ task }) {
-	// const { deleteTask, toggleTask } = useTask();
+	const { deleteTask } = useTask();
 	return (
 		<div className="w-full bg-purple-300 rounded-lg h-12 p-2 flex content-between items-center justify-between">
 			<div className="flex items-center">
@@ -22,7 +23,7 @@ function TaskItem({ task }) {
 			<div className="flex items-center">
 				<button
 					className="btn btn-sm btn-link"
-					// onClick={() => deleteTask(task.id)}
+					onClick={() => deleteTask(task.id)}
 				>
 					<DeleteOutlined style={{ color: "red" }} />
 				</button>
