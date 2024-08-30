@@ -2,15 +2,14 @@ import React from "react";
 import TaskList from "../components/TaskList";
 import TaskForm from "../components/TaskForm";
 import { TaskProvider } from "../context/TaskContext";
-import Avatar from "../components/Avatar";
-import Avatar2 from "../components/Avatar2";
+import Avatar from "../components/AvatarDrop";
 
 function Home() {
 	return (
 		<TaskProvider>
 			<div className="min-w-full">
 				<div className="fixed z-30 w-full flex justify-end -my-4 px-4 sm:px-4 md:px-10 lg:px-36 ">
-					<Avatar2 />
+					<Avatar />
 				</div>
 				<div className="">
 					<h1 className="text-xl sm:text-xl md:text-2xl lg:text-2xl font-bold underline text-center my-8">

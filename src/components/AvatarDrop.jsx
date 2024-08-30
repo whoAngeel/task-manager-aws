@@ -1,6 +1,6 @@
-import { Anchor, Avatar, Button, Dropdown, Typography } from "antd";
+import { Avatar, Dropdown, Typography } from "antd";
 import React from "react";
-import { Cookies, useCookies } from "react-cookie";
+import { useCookies } from "react-cookie";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
