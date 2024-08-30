@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "@ant-design/icons": "^5.4.0",
+    "@arcgis/core": "^4.30.9",
+    "@arcgis/map-components-react": "^4.30.7",
     "antd": "^5.20.2",
     "axios": "^1.7.5",
     "react": "^18.3.1",
