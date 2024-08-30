@@ -2,6 +2,7 @@ import { message } from "antd";
 import Title from "antd/es/skeleton/Title";
 import axios from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
+import { useCookies } from "react-cookie";
 
 const TaskContext = createContext();
 
@@ -19,9 +20,10 @@ export const TaskProvider = ({ children }) => {
 	const [messageApi, contextHolder] = message.useMessage();
 	const [isLoading, setIsLoading] = useState(false);
 	const [isInitialized, setIsInitialized] = useState(false);
-
+	const [cookies, setCookie, removeCookie] = useCookies();
 	useEffect(() => {
 		fetchTasks();
+		// cookies.user.userId
 	}, []);
 
 	const filteredTasks = tasks.filter((task) => {
@@ -38,7 +40,7 @@ export const TaskProvider = ({ children }) => {
 		setIsLoading(true);
 		try {
 			const response = await axios.get(
-				`${import.meta.env.VITE_API_URL}/tasks`
+				`${import.meta.env.VITE_API_URL}/users/${cookies.user.userId}/tasks`
 			);
 			// const response = await axios.get(`/api/tasks`);
 			setTasks(response.data);
@@ -55,7 +57,7 @@ export const TaskProvider = ({ children }) => {
 		setIsLoading(true);
 		try {
 			const response = await axios.post(
-				`${import.meta.env.VITE_API_URL}/tasks`,
+				`${import.meta.env.VITE_API_URL}/users/${cookies.user.userId}/tasks`,
 				{ title }
 			);
 			setTasks([response.data, ...tasks]); //TODO ordenar en orden de creacion

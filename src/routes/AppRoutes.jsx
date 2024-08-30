@@ -9,13 +9,28 @@ import Login from "../pages/Login";
 import Register from "../pages/Register";
 import { AuthProvider } from "../context/AuthContext";
 import AuthenticatedRoutes from "./AuthenticatedRoutes";
+import ProtectedRoute from "./ProtectedRoute";
 
 function AppRoutes() {
 	return (
 		<AuthProvider>
 			<Routes>
-				<Route index element={<Home />} />
-				<Route path="/profile" element={<Profile />} />
+				<Route
+					index
+					element={
+						<ProtectedRoute>
+							<Home />
+						</ProtectedRoute>
+					}
+				/>
+				<Route
+					path="/profile"
+					element={
+						<ProtectedRoute>
+							<Profile />
+						</ProtectedRoute>
+					}
+				/>
 				<Route path="/login" element={<Login />} />
 				<Route path="/register" element={<Register />} />
 				<Route path="/map-test" element={<GIS />} />

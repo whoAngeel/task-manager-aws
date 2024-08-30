@@ -27,13 +27,20 @@ export const AuthProvider = ({ children }) => {
 				`${import.meta.env.VITE_API_URL}/auth/login`,
 				{ email, password }
 			);
-			console.log(response.data);
+			setCookie("user", response.data);
+			navigate("/");
 		} catch (error) {
 			console.log(error);
 			messageApi.error("Error logging in");
 		} finally {
 			setIsLoading(false);
 		}
+	};
+
+	const logout = () => {
+		removeCookie("user");
+		setUser(null);
+		navigate("/login");
 	};
 
 	const register = async (userData) => {
@@ -48,14 +55,16 @@ export const AuthProvider = ({ children }) => {
 			navigate("/");
 		} catch (error) {
 			console.log(error);
-			messageApi.error("Error registering");
+			messageApi.error(
+				error.status == 409 ? "User already exists" : "Error registering"
+			);
 		} finally {
 			setIsLoading(false);
 		}
 	};
 
 	return (
-		<AuthContext.Provider value={{ user, isLoading, register, login }}>
+		<AuthContext.Provider value={{ user, isLoading, register, login, logout }}>
 			{contextHolder}
 			{children}
 		</AuthContext.Provider>

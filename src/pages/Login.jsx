@@ -1,12 +1,20 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Form, Input, Typography } from "antd";
 import { Link } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 function Login() {
-	const { form } = Form.useForm();
+	const [form] = Form.useForm();
+	const [clientReady, setClientReady] = useState(false);
+	const { login, isLoading } = useAuth();
+
+	useEffect(() => {
+		setClientReady(true);
+	}, []);
 
 	const onFinish = (values) => {
-		console.log(values);
+		// console.log(values);
+		login(values.email, values.password);
 	};
 	return (
 		<div className="h-screen w-full flex items-center justify-center">
@@ -53,10 +61,24 @@ function Login() {
 					>
 						<Input.Password placeholder="************" />
 					</Form.Item>
-					<Form.Item>
-						<Button block type="primary" htmlType="submit">
-							Continue
-						</Button>
+					<Form.Item shouldUpdate>
+						{() => (
+							<Button
+								block
+								type="primary"
+								htmlType="submit"
+								loading={isLoading}
+								disabled={
+									!clientReady ||
+									!form.isFieldsTouched(true) ||
+									!!form
+										.getFieldsError()
+										.filter(({ errors }) => errors.length).length
+								}
+							>
+								{isLoading ? <span>Loading...</span> : "Log In"}
+							</Button>
+						)}
 					</Form.Item>
 					<div className="text-xs text-right">
 						<span>

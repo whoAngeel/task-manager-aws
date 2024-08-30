@@ -1,19 +1,12 @@
 import { Button, Form, Input } from "antd";
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
-import { redirect } from "react-router-dom";
+import { Link, redirect } from "react-router-dom";
 
 function Register() {
 	const [form] = Form.useForm();
 	const [clientReady, setClientReady] = useState(false);
 	const { register: registerHandler, isLoading } = useAuth();
-
-	const hasErrors = () => {
-		return (
-			form.isFieldsTouched(true) &&
-			form.getFieldsError().filter(({ errors }) => errors.length === 0)
-		);
-	};
 
 	useEffect(() => {
 		setClientReady(true);
@@ -124,6 +117,12 @@ function Register() {
 							</Button>
 						)}
 					</Form.Item>
+					<div className="text-xs text-right">
+						<span>
+							Do you already have an account?{" "}
+							<Link to={"/login"}>Log in here</Link>
+						</span>
+					</div>
 				</Form>
 			</div>
 		</div>
