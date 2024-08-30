@@ -105,12 +105,16 @@ export const TaskProvider = ({ children }) => {
 				duration: 0,
 			});
 			const res = await axios.patch(
-				`${import.meta.env.VITE_API_URL}/tasks/${id}/toggle`
+				`${import.meta.env.VITE_API_URL}/users/${
+					cookies.user.userId
+				}/tasks/${id}/toggle`
 			);
 			console.log(res.data);
 			setTasks((prevTasks) =>
 				prevTasks.map((task) =>
-					task.id === id ? { ...task, completed: !task.completed } : task
+					task.taskId === id
+						? { ...task, completed: !task.completed }
+						: task
 				)
 			);
 			messageApi.success({
