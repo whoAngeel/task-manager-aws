@@ -18,7 +18,7 @@ function TaskList() {
 		);
 	}
 	return (
-		<div className="w-full grid grid-cols-1 gap-2">
+		<div className="w-full grid grid-cols-1 gap-2 ">
 			{tasks.map((task, index) => (
 				<TaskItem task={task} key={index} />
 			))}
