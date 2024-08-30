@@ -53,20 +53,8 @@ export const TaskProvider = ({ children }) => {
 		}
 	};
 
-	const pushTask = async (title) => {
-		setIsLoading(true);
-		try {
-			const response = await axios.post(
-				`${import.meta.env.VITE_API_URL}/users/${cookies.user.userId}/tasks`,
-				{ title }
-			);
-			setTasks([response.data, ...tasks]); //TODO ordenar en orden de creacion
-		} catch (error) {
-			console.log(error);
-			messageApi.error("Error adding task!!");
-		} finally {
-			setIsLoading(false);
-		}
+	const pushTask = (task) => {
+		setTasks([task, ...tasks]); //TODO ordenar en orden de creacion
 	};
 
 	const clearTasks = () => {

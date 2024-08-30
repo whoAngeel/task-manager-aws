@@ -1,11 +1,29 @@
 import { Form, Input } from "antd";
-import React from "react";
+import React, { useState } from "react";
 import { useTask } from "../context/TaskContext";
+import axios from "axios";
+import { useCookies } from "react-cookie";
 function TaskForm() {
 	const [form] = Form.useForm();
+	const [isLoading, setIsLoading] = useState(false);
 	const { pushTask } = useTask();
-	const onFinish = (values) => {
-		pushTask(form.getFieldValue("title"));
+	const [cookies] = useCookies(["user"]);
+	const onFinish = async (values) => {
+		setIsLoading(true);
+		try {
+			const response = await axios.post(
+				`${import.meta.env.VITE_API_URL}/users/${
+					cookies.user?.userId
+				}/tasks`,
+				{ title: values.title }
+			);
+			console.log(response.data);
+			pushTask(response.data);
+		} catch (error) {
+			console.log(error);
+		} finally {
+			setIsLoading(false);
+		}
 		form.setFieldValue("title", "");
 	};
 
@@ -23,11 +41,12 @@ function TaskForm() {
 				>
 					<Input
 						placeholder="Title"
+						disabled={isLoading}
 						variant="outlined"
 						size="middle"
 						allowClear
 						showCount
-						maxLength={30}
+						maxLength={50}
 					></Input>
 				</Form.Item>
 			</Form>

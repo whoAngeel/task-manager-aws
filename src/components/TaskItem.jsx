@@ -12,7 +12,7 @@ function TaskItem({ task }) {
 					type="checkbox"
 					className="checkbox checkbox-sm"
 					checked={task.completed}
-					onChange={() => toggleTask(task.id)}
+					onChange={() => toggleTask(task.taskId)}
 				/>
 			</div>
 			<div className="w-full mx-2 flex items-center">
@@ -23,7 +23,7 @@ function TaskItem({ task }) {
 			<div className="flex items-center">
 				<button
 					className="btn btn-sm btn-link"
-					onClick={() => deleteTask(task.id)}
+					onClick={() => deleteTask(task.taskId)}
 				>
 					<DeleteOutlined style={{ color: "red" }} />
 				</button>
