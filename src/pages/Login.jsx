@@ -10,7 +10,7 @@ function Login() {
 	};
 	return (
 		<div className="h-screen w-full flex items-center justify-center">
-			<div className="w-10/12 sm:w-10/12 md:w-3/12 bg-base-100 rounded-lg py-4  ">
+			<div className="w-10/12 sm:w-10/12 md:w-5/12 bg-base-100 rounded-lg py-4  ">
 				<h2 className="text-3xl font-bold text-center">Log In</h2>
 				<Form
 					layout="vertical"

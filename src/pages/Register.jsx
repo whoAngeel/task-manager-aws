@@ -1,11 +1,26 @@
 import { Button, Form, Input } from "antd";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useAuth } from "../context/AuthContext";
+import { redirect } from "react-router-dom";
 
 function Register() {
-	const { form } = Form.useForm();
+	const [form] = Form.useForm();
+	const [clientReady, setClientReady] = useState(false);
+	const { register: registerHandler, isLoading } = useAuth();
 
+	const hasErrors = () => {
+		return (
+			form.isFieldsTouched(true) &&
+			form.getFieldsError().filter(({ errors }) => errors.length === 0)
+		);
+	};
+
+	useEffect(() => {
+		setClientReady(true);
+	}, []);
 	const register = (values) => {
-		console.log(values);
+		// console.log(values);
+		registerHandler(values);
 	};
 	return (
 		<div className="h-screen w-full flex justify-center items-center">
@@ -18,9 +33,9 @@ function Register() {
 					className="m-5"
 				>
 					<Form.Item
-						label="Full Name:"
+						label="Name:"
 						required
-						name={"fullname"}
+						name={"name"}
 						rules={[
 							{
 								required: true,
@@ -65,7 +80,7 @@ function Register() {
 					<Form.Item
 						label="Password:"
 						required
-						tooltip="The password must contain at least 6 characters, one uppercase letter, one lowercase letter, one number"
+						tooltip="The password must contain at least 6 characters, at least one number"
 						name={"password"}
 						rules={[
 							{
@@ -78,18 +93,36 @@ function Register() {
 									"The password must contain at least 6 characters",
 							},
 							{
-								pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])$/,
+								pattern: /^(?=.*[0-9])[a-zA-Z0-9]+$/,
 								message:
-									"The password must contain at least one uppercase letter, one lowercase letter, one number",
+									"The password must contain at least one number",
 							},
 						]}
 					>
 						<Input.Password placeholder="password" />
 					</Form.Item>
-					<Form.Item>
-						<Button block type="primary" htmlType="submit">
-							Register
-						</Button>
+					<Form.Item shouldUpdate>
+						{() => (
+							<Button
+								type="primary"
+								block
+								loading={isLoading}
+								htmlType="submit"
+								disabled={
+									!clientReady ||
+									!form.isFieldsTouched(true) ||
+									!!form
+										.getFieldsError()
+										.filter(({ errors }) => errors.length).length
+								}
+							>
+								{isLoading ? (
+									<span>Registering...</span>
+								) : (
+									"Register"
+								)}
+							</Button>
+						)}
 					</Form.Item>
 				</Form>
 			</div>
