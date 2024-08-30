@@ -75,14 +75,16 @@ export const TaskProvider = ({ children }) => {
 				duration: 0,
 			});
 			const response = await axios.delete(
-				`${import.meta.env.VITE_API_URL}/tasks/${id}`
+				`${import.meta.env.VITE_API_URL}/users/${
+					cookies.user.userId
+				}/tasks/${id}`
 			);
 			messageApi.success({
 				key,
 				content: "Task deleted successfully!",
 				duration: 2,
 			});
-			setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
+			setTasks((prevTasks) => prevTasks.filter((task) => task.taskId !== id));
 		} catch (error) {
 			messageApi.error({
 				key,
